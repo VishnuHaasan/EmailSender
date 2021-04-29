@@ -1,0 +1,5 @@
+<h1>Flight information for flight: <%= @flight.name %></h1>
+<h3>Flight model: <%= @flight.model %></h3>
+<h3>Flight duration: <%= @flight.duration %> mins</h3>
+<h3>Flight is scheduled on: <%= @flight.scheduled_on.to_date %></h3>
+<%= link_to "Back to root path", root_path %>

@@ -1,0 +1,21 @@
+<h1>Flights</h1>
+<%= form_with url: "/flights", method: :get do %>
+<% @airports = Airport.all.map{|ap| [ap.code,ap.id]}.uniq{|ap| ap[0]} %>
+<% @flight_dates = Flight.all.map{|flight| [flight.scheduled_on.to_date,flight.scheduled_on]}.uniq{|flight| flight[0]} %>
+<% @seats = [[1,1],[2,2],[3,3],[4,4]] %>
+<%= select_tag(:from_airport_id,options_for_select(@airports),{prompt: "From?"}) %><br />
+<%= select_tag(:to_airport_id,options_for_select(@airports),{prompt: "To?"}) %><br />
+<%= select_tag(:flight_date,options_for_select(@flight_dates),{prompt: "Date?"}) %><br />
+<%= select_tag(:passenger_seats,options_for_select(@seats),{prompt: "No of passengers?"}) %><br />
+<%= submit_tag "Search" %>
+<% end %>
+<% unless @available_flights.nil? %>
+  <%= form_with url: "/bookings/new", method: :get do |form| %>
+    <% @available_flights.each do |flight| %>
+      <%= form.label :booking_details, flight.name %> 
+      <%= form.radio_button :flight_id, flight.id %><br />
+    <% end %>
+    <%= form.hidden_field :pax, value: @seat %>
+    <%= form.submit "Book" %>
+  <%end %>
+<% end %>
